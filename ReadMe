@@ -1,1 +1,128 @@
-ReadMe.md
+# Multi-Threaded Card Game Simulation
+
+## Overview
+This project implements a multi-threaded card game simulation in Java. The game supports **n players** and **n decks**, with each player aiming to collect four cards of the same value in their hand. The game features a **ring topology**, thread-safe classes, and output files detailing each player's actions and deck contents.
+
+Developed as part of the [Module Name] coursework at the University of Exeter using **pair programming** methodology.
+
+---
+
+## Features
+
+- Thread-safe `Card` and `Player` classes
+- `CardDeck` class to manage decks
+- `CardGame` executable class to initialize and run the simulation
+- Multi-threaded gameplay: each player operates as a separate thread
+- Game strategy:
+  - Each player prefers a specific card denomination based on their index
+  - Draws from the deck on the left and discards to the deck on the right
+- Automatic win detection and game termination when a player collects four identical cards
+- Output files:
+  - One output file per player (`playerX_output.txt`) recording all actions
+  - One output file per deck (`deckX_output.txt`) recording final deck contents
+- Console output for immediate win announcements
+
+---
+
+## Installation and Running
+
+### Prerequisites
+
+- Java JDK 11 or higher
+- Git (optional, for cloning the repository)
+
+### Steps
+
+1. Clone the repository (or download ZIP):
+
+```bash
+git clone <repository_url>
+cd <repository_folder>
+Compile the Java files:
+
+bash
+Copy
+Edit
+javac *.java
+Run the game:
+
+bash
+Copy
+Edit
+java CardGame
+The program will prompt you to:
+
+Enter the number of players (n)
+
+Provide the path to a valid card pack file (plain text file with 8n integers, one per line)
+
+Output files will be generated in the same directory:
+
+playerX_output.txt for each player
+
+deckX_output.txt for each decka
+
+
+Run the game:
+
+java CardGame
+
+
+The program will prompt you to:
+
+Enter the number of players (n)
+
+Provide the path to a valid card pack file (plain text file with 8n integers, one per line)
+
+Output files will be generated in the same directory:
+
+playerX_output.txt for each player
+
+deckX_output.txt for each deck
+
+Project Structure
+├── Card.java           # Thread-safe card representation
+├── Player.java         # Thread-safe player class
+├── CardDeck.java       # Deck management
+├── CardGame.java       # Main executable class
+├── packs/              # Sample input packs
+├── output/             # Generated output files
+└── README.md
+
+Gameplay Rules
+
+Each player receives 4 cards in a round-robin fashion.
+
+Remaining cards are distributed to the decks in a round-robin fashion.
+
+Players pick a card from the deck to their left and discard to the deck on their right.
+
+The game ends immediately when a player collects four cards of the same value.
+
+All actions are logged in the player's output file.
+
+Testing
+
+Test classes are provided in cardsTest.zip.
+
+JUnit 5 framework is used for unit testing.
+
+Instructions to run tests are included in the README within cardsTest.zip.
+
+Notes
+
+The game ensures thread-safety in all player and card interactions.
+
+Multi-threading may lead to simultaneous win detection by multiple players; only one winner is logged per game run.
+
+Supports dynamic number of players (n) and flexible input packs.
+
+Authors
+
+Suraj Nagpal – University of Exeter, Computer Science
+
+[Pair programming partner name] – University of Exeter, Computer Science
+
+License
+
+This project is developed as part of academic coursework and is not intended for commercial use.
