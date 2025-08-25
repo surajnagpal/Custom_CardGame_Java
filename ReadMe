@@ -1,128 +1,175 @@
 # Multi-Threaded Card Game Simulation
 
-## Overview
-This project implements a multi-threaded card game simulation in Java. The game supports **n players** and **n decks**, with each player aiming to collect four cards of the same value in their hand. The game features a **ring topology**, thread-safe classes, and output files detailing each player's actions and deck contents.
+A Java-based multi-threaded card playing simulation developed as part of ECM2414 Software Development coursework. This project implements a thread-safe card game where n players compete to collect four cards of the same denomination.
 
-Developed as part of the [Module Name] coursework at the University of Exeter using **pair programming** methodology.
+## 🎯 Project Overview
 
----
+The game simulates a card playing environment where:
+- **n players** (numbered 1 to n) each hold 4 cards
+- **n decks** of cards arranged in a ring topology
+- Players attempt to collect 4 cards of the same value to win
+- Multi-threaded implementation ensures concurrent gameplay
 
-## Features
+## 🏗️ Game Architecture
 
-- Thread-safe `Card` and `Player` classes
-- `CardDeck` class to manage decks
-- `CardGame` executable class to initialize and run the simulation
-- Multi-threaded gameplay: each player operates as a separate thread
-- Game strategy:
-  - Each player prefers a specific card denomination based on their index
-  - Draws from the deck on the left and discards to the deck on the right
-- Automatic win detection and game termination when a player collects four identical cards
-- Output files:
-  - One output file per player (`playerX_output.txt`) recording all actions
-  - One output file per deck (`deckX_output.txt`) recording final deck contents
-- Console output for immediate win announcements
+### Ring Topology
+Players and decks are arranged in a circular formation:
+```
+player1 → deck1 → player2 → deck2 → ... → playern → deckn → player1
+```
 
----
+### Game Flow
+1. **Setup**: Distribute 4 cards to each player in round-robin fashion
+2. **Deck Filling**: Fill remaining cards into decks (round-robin)
+3. **Gameplay**: Players simultaneously draw from left deck and discard to right deck
+4. **Victory**: First player with 4 matching cards wins
 
-## Installation and Running
+## 🚀 Getting Started
 
 ### Prerequisites
+- Java Development Kit (JDK) 8 or higher
+- JUnit 4.x or 5.x for testing
 
-- Java JDK 11 or higher
-- Git (optional, for cloning the repository)
+### Running the Game
 
-### Steps
+1. **Compile and run the executable JAR:**
+   ```bash
+   java -jar cards.jar
+   ```
 
-1. Clone the repository (or download ZIP):
+2. **Follow the prompts:**
+   - Enter number of players (n)
+   - Provide path to valid pack file
 
-```bash
-git clone <repository_url>
-cd <repository_folder>
-Compile the Java files:
+### Input Pack Format
+- Plain text file with 8n lines
+- Each line contains a single non-negative integer
+- Example for 4 players (32 cards total):
+  ```
+  1
+  2
+  3
+  4
+  1
+  2
+  ...
+  ```
 
-bash
-Copy
-Edit
-javac *.java
-Run the game:
+## 📁 Project Structure
 
-bash
-Copy
-Edit
-java CardGame
-The program will prompt you to:
-
-Enter the number of players (n)
-
-Provide the path to a valid card pack file (plain text file with 8n integers, one per line)
-
-Output files will be generated in the same directory:
-
-playerX_output.txt for each player
-
-deckX_output.txt for each decka
-
-
-Run the game:
-
-java CardGame
-
-
-The program will prompt you to:
-
-Enter the number of players (n)
-
-Provide the path to a valid card pack file (plain text file with 8n integers, one per line)
-
-Output files will be generated in the same directory:
-
-playerX_output.txt for each player
-
-deckX_output.txt for each deck
-
-Project Structure
-├── Card.java           # Thread-safe card representation
-├── Player.java         # Thread-safe player class
-├── CardDeck.java       # Deck management
-├── CardGame.java       # Main executable class
-├── packs/              # Sample input packs
-├── output/             # Generated output files
+```
+├── src/
+│   ├── CardGame.java          # Main executable class
+│   ├── Card.java              # Thread-safe Card class
+│   ├── Player.java            # Thread-safe Player class
+│   ├── CardDeck.java          # Thread-safe CardDeck class
+│   └── ...
+├── tests/
+│   ├── CardTest.java
+│   ├── PlayerTest.java
+│   └── ...
+├── cards.jar                  # Executable JAR file
+├── cardsTest.zip             # Test suite package
 └── README.md
+```
 
-Gameplay Rules
+## 🎮 Game Strategy
 
-Each player receives 4 cards in a round-robin fashion.
+Each player follows a simple strategy:
+- **Preferred Cards**: Player i prefers cards with denomination i
+- **Drawing**: Take card from deck to their left
+- **Discarding**: Discard non-preferred card to deck on their right
+- **No Hoarding**: Must not hold non-preferred cards indefinitely
 
-Remaining cards are distributed to the decks in a round-robin fashion.
+## 📊 Output Files
 
-Players pick a card from the deck to their left and discard to the deck on their right.
+The game generates multiple output files:
 
-The game ends immediately when a player collects four cards of the same value.
+### Player Output Files
+- **Format**: `player{i}_output.txt`
+- **Content**: Action log for each player
+- **Example**:
+  ```
+  player 1 initial hand 1 1 2 3
+  player 1 draws a 4 from deck 1
+  player 1 discards a 3 to deck 2
+  player 1 current hand is 1 1 2 4
+  player 1 wins
+  player 1 exits
+  player 1 final hand: 1 1 1 1
+  ```
 
-All actions are logged in the player's output file.
+### Deck Output Files
+- **Format**: `deck{i}_output.txt`
+- **Content**: Final deck contents
+- **Example**: `deck2 contents: 1 3 3 7`
 
-Testing
+## 🧪 Testing
 
-Test classes are provided in cardsTest.zip.
+### Running Tests
+```bash
+# Extract test suite
+unzip cardsTest.zip
 
-JUnit 5 framework is used for unit testing.
+# Run tests (example with JUnit)
+java -cp .:junit-4.12.jar:hamcrest-core-1.3.jar org.junit.runner.JUnitCore TestSuite
+```
 
-Instructions to run tests are included in the README within cardsTest.zip.
+### Test Coverage
+- Unit tests for all classes
+- Thread safety testing
+- Edge case handling
+- Input validation
+- Exception handling
 
-Notes
+## 🔧 Technical Features
 
-The game ensures thread-safety in all player and card interactions.
+### Thread Safety
+- **Synchronized methods** for card operations
+- **Thread-safe collections** for hands and decks
+- **Atomic operations** for draw-discard actions
 
-Multi-threading may lead to simultaneous win detection by multiple players; only one winner is logged per game run.
+### Exception Handling
+- Invalid pack file validation
+- Robust input handling
+- Graceful error messages
 
-Supports dynamic number of players (n) and flexible input packs.
+### Object-Oriented Design
+- Clean separation of concerns
+- Proper encapsulation
+- Inheritance where appropriate
 
-Authors
+## 🏆 Victory Conditions
 
-Suraj Nagpal – University of Exeter, Computer Science
+A player wins when they have:
+- **4 cards of the same denomination** in their hand
+- **Immediate win**: If dealt 4 matching cards at game start
+- **Runtime win**: Through strategic play during the game
 
-[Pair programming partner name] – University of Exeter, Computer Science
+## 📝 Development Notes
 
-License
+### Pair Programming
+This project was developed using pair programming methodology, promoting:
+- Code quality through continuous review
+- Knowledge sharing between developers
+- Reduced bugs through collaborative debugging
 
-This project is developed as part of academic coursework and is not intended for commercial use.
+### Version Control
+- Git repository maintained throughout development
+- Regular commits documenting progress
+- Branch management for feature development
+
+## 🚨 Known Limitations
+
+- Multiple simultaneous winners not handled (by specification)
+- Simple strategy implementation (not optimal play)
+- Fixed ring topology structure
+
+## 📄 License
+
+This project is part of academic coursework for ECM2414 Software Development at the University of Exeter.
+---
+
+**Academic Year**: 2024/25  
+**Module**: ECM2414 - Software Development  
+**Institution**: University of Exeter
