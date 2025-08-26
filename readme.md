@@ -1,4 +1,4 @@
-# Multi-Threaded Card Game Simulation
+## Multi-Threaded Card Game Simulation
 
 A Java-based multi-threaded card playing simulation developed as part of ECM2414 Software Development coursework. This project implements a thread-safe card game where n players compete to collect four cards of the same denomination.
 
